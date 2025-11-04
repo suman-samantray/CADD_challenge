@@ -68,11 +68,12 @@ cd $WORKSPACE/CADD_flow
 source ../init_CADDflow_env.sh
 
 ### 🧩 1️⃣ Boltz + Docking Environment
+check CADD_Challenge/set_env/boltz_env.yml for complete dependencies
 ```bash
 module purge
 module load python/3.10 cuda/12.4 gcc/11.2.0
 
-export WORKSPACE=/global/cfs/cdirs/m3288/suman/CADD_workspace
+export WORKSPACE=<path_to_CADD_workspace>
 cd $WORKSPACE
 
 micromamba create -y -p $WORKSPACE/boltz_env python=3.10 -c conda-forge
@@ -83,6 +84,7 @@ $WORKSPACE/boltz_env/bin/pip install meeko==0.3.0 matplotlib seaborn tqdm
 ```
 
 ### 🧩 2️⃣ ADMET + Descriptor Environment
+check CADD_Challenge/set_env/admet_env.yml for complete dependencies
 ```bash
 micromamba create -y -p $WORKSPACE/admet_env python=3.10 -c conda-forge
 $WORKSPACE/admet_env/bin/pip install admet-ai pandas numpy torch torchvision torchaudio scikit-learn
