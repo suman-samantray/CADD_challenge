@@ -34,23 +34,23 @@ This framework combines:
 ## 🧠 Conceptual Flow
 
 ```
-[Target PDB] 
-   ↓
-[Receptor Prep] 
-   ↓
-[Ligand Batch Generation] 
-   ↓
-[MaSIF-Pre: Pocket Localization] 
-   ↓
- ┌───────────────┬──────────────────┐
- │ AutoDock Vina │ Boltz (ML Dock)  │
- └───────┬───────┴────────┬─────────┘
-         ↓                ↓
-     [Ranking + ADMET Integration]
-                     ↓
-     [MaSIF-Post: Pocket Validation]
-                     ↓
-       [Plots + Correlation Analysis]
+                                             [Target PDB] 
+                                                 ↓
+                                           [Receptor Prep] 
+                                                 ↓
+                                     [Ligand Batch Generation] 
+                                                 ↓
+                                  [MaSIF-Pre: Pocket Localization] 
+                                                 ↓
+                                 ┌───────────────┬──────────────────┐
+                                 │ AutoDock Vina │ Boltz (ML Dock)  │
+                                 └───────────────┬──────────────────┘
+                                                 ↓       
+                                    [Ranking + ADMET Integration]
+                                                 ↓
+                                   [MaSIF-Post: Pocket Validation]
+                                                 ↓
+                                   [Plots + Correlation Analysis]
 ```
 
 ---
@@ -58,6 +58,12 @@ This framework combines:
 ## ⚙️ Environment Setup (HPC / Perlmutter)
 
 Two **micromamba environments** are created for reproducibility.
+# One-time setup
+bash install_CADDflow_env.sh
+
+# After each login
+cd $WORKSPACE/CADD_flow
+source ../init_CADDflow_env.sh
 
 ### 🧩 1️⃣ Boltz + Docking Environment
 ```bash
@@ -108,15 +114,15 @@ micromamba env export -p $WORKSPACE/admet_env > admet_env.yml
 
 ## 🚀 Running the Pipeline
 
-### Example: Thrombin (1PPB)
+### Example: Thrombin (PDB ID: 1PPB)
 ```bash
 cd $WORKSPACE/CADD_flow
-../boltz_env/bin/python -m src.run_pipeline     --pdb_id 1PPB     --vendor_mode 0     --do_masif_pre     --do_vina     --do_boltz     --do_rank_admet     --do_masif_post
+../boltz_env/bin/python -m src.run_pipeline  --pdb_id 1PPB  --vendor_mode 1  --do_masif_pre  --do_vina  --do_boltz  --do_rank_admet  --do_masif_post
 ```
 
-### Example: CDK2 (1H1Q)
+### Example: CDK2 (PDB ID: 1H1Q)
 ```bash
-../boltz_env/bin/python -m src.run_pipeline     --pdb_id 1H1Q     --do_vina     --do_boltz     --do_rank_admet
+../boltz_env/bin/python -m src.run_pipeline  --pdb_id 1H1Q  --vendor_mode 2  --do_masif_pre  --do_vina  --do_boltz  --do_rank_admet  --do_masif_post
 ```
 
 ---
@@ -156,8 +162,8 @@ pip install rdkit-pypi openbabel meeko admet-ai pandas numpy matplotlib seaborn 
 
 ### 🚀 Run a minimal example
 ```bash
-git clone https://github.com/suman-samantray/CADD_flow.git
-cd CADD_flow/CADD_flow
+git clone https://github.com/suman-samantray/CADD_Challenge.git
+cd CADD_Challenge/CADD_workspace/CADD_flow
 
 python src/prepare_target.py --pdb_id 1PPB
 python src/dock_vina.py --pdb_id 1PPB
@@ -165,8 +171,8 @@ python src/rank_and_admet.py --pdb_id 1PPB
 python src/plot_rank_summary.py --pdb_id 1PPB
 ```
 
-This will generate receptor + ligand preparation, perform Vina docking (CPU), compute ADMET descriptors, and produce all plots.  
-*Boltz and MaSIF stages will be automatically skipped if CUDA is unavailable.*
+This will generate receptor + ligand preparation, perform Vina docking (CPU), MaSIF surface complementary, compute ADMET descriptors, and produce all plots.  
+*Boltz stages will be automatically skipped if CUDA is unavailable.*
 
 ---
 
@@ -182,7 +188,5 @@ This will generate receptor + ligand preparation, perform Vina docking (CPU), co
 ## 👤 Author
 
 **Dr. Suman Samantray**  
-Postdoctoral Research Associate — *Pacific Northwest National Laboratory*  
 Computational Chemistry | ML for Molecular Design  
 🔗 [https://suman-samantray.github.io](https://suman-samantray.github.io)
-
